@@ -1,0 +1,69 @@
+cd laravel-gk-1
+
+php artisan serve
+strg c			// Server schließen
+
+php artisan make:controller InfosController
+
+php artisan tinker						// PSY-Shell
+Config::get('app.name')
+
+--- Tabellen erstellen --- C:\Users\User\laravel-gk-1
+1. Erstellen:
+php artisan make:migration create_Tabellenname_table		// Ordner migration in der Datenbank einlegen
+	z.B. php artisan make:migration create_songs_table
+
+2. Bestätigen
+php artisan migrate						// Dateien aufrufen und als Tabellen in der DB einlegen
+
+3. Evtl.
+php artisan migrate:rollback					// Tabellen löschen -  Methode down()
+php artisan make:factory Name der Factory			// 
+
+-- Neuer User erstellen: --
+$users = User::factory()->count(20)->create();
+$user = DB::table('users')->where ('id', '=', 15)->get();
+exit								// exit aus Psy-Shell
+
+
+
+-- Models anlegen: --
+-- Name des Models ist der Name der DB-Tabelle, ABER in der Einzahl und groß geschrieben,
+-- Bsp. DB-Tabelle 'songs', Name des Models: 'Song'
+php artisan make:model Song
+
+php artisan migrate:refresh
+
+php artisan migrate:rollback					// alles löschen
+
+
+--- COMPOSER PROJECT (mit TINKER SPYSHELL) --- C:\Users\User\laravel-gk-2
+cd..
+composer create-project laravel/laravel laravel-gk-2
+
+use App\Models\Song
+-- Model-Song erstellen:
+php artisan make:model Song
+php artisan make:factory SongFactory -model=Song
+$songs = Song::factory()->count(30)->create();			// count(Anzahl der Datensätze z.B. 30 also 30 Songs)
+$songs = Song::all();
+
+-- Song nach ID suchen:
+$song = Song::find(25);		// wo 25 = id 25
+-- neu Song erstellen:
+$song = new Song();
+-- neue Titel (ist noch nicht in der Tabelle):
+$song->title = 'Ein neuer Titel';
+-- neues Band (ist noch nicht in der Tabelle):
+$song->band = 'Die Band';
+-- in der Tabelle speichern:
+$song->save();
+-- Song löschen:
+$song = Song::find(31);
+$song->delete();
+exit
+
+--- RESSOURCEN (Terminal) ---
+php artisan make:controller SongsController --resource
+php artisan route:list
+
